@@ -1,0 +1,35 @@
+
+.build_common:
+  image: docker:29.4.0
+  tags:
+    - dind
+  variables:
+    DOCKER_BUILDKIT: 1
+    TAG: $CI_REGISTRY/$CI_PROJECT_PATH/$IMAGE_NAME:latest
+  script:
+    - echo -n "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - docker build . -f $DOCKERFILE --build-arg CI_REGISTRY=$CI_REGISTRY --build-arg CI_PROJECT_NAMESPACE=$CI_PROJECT_NAMESPACE -t $TAG
+    - docker push $TAG
+
+build_uv:
+  extends:
+    - .build_common
+  variables:
+    IMAGE_NAME: uv
+    DOCKERFILE: uv.Dockerfile
+
+build_selenium:
+  extends:
+    - .build_common
+  needs:
+    - build_uv
+  variables:
+    IMAGE_NAME: selenium
+    DOCKERFILE: selenium.Dockerfile
+
+build_ansible:
+  extends:
+    - .build_common
+  variables:
+    IMAGE_NAME: ansible
+    DOCKERFILE: ansible.Dockerfile
