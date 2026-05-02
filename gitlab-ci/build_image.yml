@@ -27,6 +27,15 @@ build_selenium:
     IMAGE_NAME: selenium
     DOCKERFILE: selenium.Dockerfile
 
+build_selenium_ffmpeg:
+  extends:
+    - .build_common
+  needs:
+    - build_selenium
+  variables:
+    IMAGE_NAME: selenium_ffmpeg
+    DOCKERFILE: selenium_ffmpeg.Dockerfile
+
 build_ansible:
   extends:
     - .build_common
