@@ -2,10 +2,10 @@
 ARG CI_REGISTRY
 ARG CI_PROJECT_NAMESPACE
 
+FROM ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/lazy_images/selenium:latest
+
 ARG dev_pkgs='git clang make nasm pkgconf openssl-dev x264-dev x265-dev libvpx-dev aom-dev libass-dev lame-dev'
 ARG runtime_pkgs='openssl x264-libs x265-libs libvpx aom-libs libass lame'
-
-FROM ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/lazy_images/selenium:latest
 
 RUN apk add --update --no-cache $dev_pkgs
 
