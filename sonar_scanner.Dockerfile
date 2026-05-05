@@ -1,15 +1,13 @@
 
 FROM sonarsource/sonar-scanner-cli:12.1.0.3225_8.0.1
 
-ARG CI_PROJECT_DIR
-
-ENV SONAR_USER_HOME="${CI_PROJECT_DIR}/.sonar"
-ENV GIT_DEPTH="0"
-
 USER root
 
 RUN cat > /entry.bash <<'EOF'
 #!/bin/bash
+
+export SONAR_USER_HOME="${CI_PROJECT_DIR}/.sonar"
+export GIT_DEPTH="0"
 
 sonar-scanner \
   -Dsonar.host.url="${SONAR_HOST_URL}" \
