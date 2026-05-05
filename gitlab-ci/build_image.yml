@@ -8,7 +8,12 @@
     TAG: $CI_REGISTRY/$CI_PROJECT_PATH/$IMAGE_NAME:latest
   script:
     - echo -n "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
-    - docker build . -f $DOCKERFILE --build-arg CI_REGISTRY=$CI_REGISTRY --build-arg CI_PROJECT_NAMESPACE=$CI_PROJECT_NAMESPACE -t $TAG
+    - docker build . \
+        -f $DOCKERFILE \
+        --build-arg CI_REGISTRY=$CI_REGISTRY \
+        --build-arg CI_PROJECT_NAMESPACE=$CI_PROJECT_NAMESPACE \
+        --build-arg CI_PROJECT_DIR=$CI_PROJECT_DIR \
+        -t $TAG
     - docker push $TAG
 
 build_uv:
@@ -42,3 +47,10 @@ build_ansible:
   variables:
     IMAGE_NAME: ansible
     DOCKERFILE: ansible.Dockerfile
+
+build_sonar_scanner:
+  extends:
+    - .build_common
+  variables:
+    IMAGE_NAME: sonar_scanner
+    DOCKERFILE: sonar_scanner.Dockerfile
