@@ -3,7 +3,9 @@ FROM sonarsource/sonar-scanner-cli:12.1.0.3225_8.0.1
 
 USER root
 
-RUN cat > /entry.bash <<'EOF'
+ENV SCRIPT_PATH=/usr/local/bin/entry.bash
+
+RUN cat > $SCRIPT_PATH <<'EOF'
 #!/bin/bash
 
 export SONAR_USER_HOME="${CI_PROJECT_DIR}/.sonar"
@@ -16,10 +18,9 @@ sonar-scanner \
   -Dsonar.python.version="${SONAR_PYTHON_VERSION:-3.12}"
 EOF
 
-RUN chown scanner-cli: /entry.bash
-RUN chmod 555 /entry.bash
+RUN chown scanner-cli: $SCRIPT_PATH
+RUN chmod 555 $SCRIPT_PATH
 
 USER scanner-cli
 
-ENTRYPOINT [""]
-CMD ["/bin/bash", "/entry.bash"]
+ENTRYPOINT ["/bin/bash"]
