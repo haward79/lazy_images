@@ -6,6 +6,8 @@ ARG CI_PROJECT_DIR
 ENV SONAR_USER_HOME="${CI_PROJECT_DIR}/.sonar"
 ENV GIT_DEPTH="0"
 
+USER root
+
 RUN cat > /entry.bash <<'EOF'
 #!/bin/bash
 
@@ -15,6 +17,11 @@ sonar-scanner \
   -Dsonar.qualitygate.wait=true \
   -Dsonar.python.version="${SONAR_PYTHON_VERSION:-3.12}"
 EOF
+
+RUN chown scanner-cli: /entry.bash
+RUN chmod 555 /entry.bash
+
+USER scanner-cli
 
 ENTRYPOINT [""]
 CMD ["/bin/bash", "/entry.bash"]

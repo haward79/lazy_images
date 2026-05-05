@@ -5,6 +5,7 @@ push-github:
     - build_selenium
     - build_selenium_ffmpeg
     - build_ansible
+    - build_sonar_scanner
   image: $CI_REGISTRY/haward79/push2github/push2github:latest
   variables:
     GITHUB_URL: git@github.com:haward79/lazy_images.git
