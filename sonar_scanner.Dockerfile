@@ -23,4 +23,4 @@ RUN chmod 555 $SCRIPT_PATH
 
 USER scanner-cli
 
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT [""]
