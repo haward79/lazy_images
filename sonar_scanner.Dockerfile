@@ -8,10 +8,11 @@ ENV SCRIPT_PATH=/usr/local/bin/entry.bash
 RUN cat > $SCRIPT_PATH <<'EOF'
 #!/bin/bash
 
-[[ $GIT_DEPTH -eq 0 ]] || {
-  echo 'Please set env var $GIT_DEPTH to 0 in your CI job'
+if [[ "$GIT_DEPTH" -ne 0 ]] || [[ "$GIT_STRATEGY" != 'clone' ]]
+then
+  echo 'Please set env var $GIT_DEPTH to 0 and $GIT_STRATEGY to clone in your CI job'
   exit 1
-}
+fi
 
 export SONAR_USER_HOME="${CI_PROJECT_DIR}/.sonar"
 export SONAR_PROJECT_VERSION="${CI_COMMIT_SHORT_SHA}"
