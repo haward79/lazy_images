@@ -1,5 +1,5 @@
 
-FROM sonarsource/sonar-scanner-cli:12.1.0.3225_8.0.1
+FROM sonarsource/sonar-scanner-cli:12.1.0.3233_8.0.1
 
 USER root
 
